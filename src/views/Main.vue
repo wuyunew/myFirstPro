@@ -1,9 +1,7 @@
-<script >
-export default{
-    name:'Main'
-}
-</script>
+<script setup>
+import CommonAside from '@/components/CommonAside.vue';
 
+</script>
 <template>
 <div class="common-layout">
     <el-container :direction="vertical" class="lay-container">
@@ -11,7 +9,7 @@ export default{
             <common-header />
         </el-header>
         <el-container :direction="horizontal">
-            <common-aside />
+            <CommonAside />
             <el-container :direction="vertical">
                 <el-main height="" class="right-main">
                     main
@@ -33,6 +31,7 @@ export default{
   .el-header{
     background-color: #333;
   }
+
 
 
 </style>

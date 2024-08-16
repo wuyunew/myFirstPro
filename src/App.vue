@@ -4,9 +4,7 @@
 
 <template>
    <RouterView></RouterView>
-   <el-button type="success" size="default" @click="">
-      默认按钮
-   </el-button>
+
    
 </template>
 

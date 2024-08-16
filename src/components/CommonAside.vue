@@ -1,40 +1,40 @@
 <template>
-    <<el-aside width="180px">
-        <el-menu
-        default-active="2"
-        class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
-      >
-        <el-sub-menu index="1">
+    <el-aside width="180px">
+      <el-menu
+      background-color="#545c64"
+      text-color="#fff">
+      <h3>通用后台管理系统</h3>
+        <el-menu-item
+            v-for="item in noChildren"
+            :index="item.path"
+            :key="item.path"
+        >
+          <component class="icons" :is="item.icon"></component> 
+          <span>{{ item.label }}</span>
+        </el-menu-item>
+
+        <el-sub-menu
+            v-for="item in hasChildren"
+            :index="item.path"
+            :key="item.path"
+        >
+
           <template #title>
-            <el-icon><location /></el-icon>
-            <span>Navigator One</span>
+            <component class="icons" :is="item.icon"></component> 
+            <span>{{ item.label }}</span>
           </template>
-          <el-menu-item-group title="Group One">
-            <el-menu-item index="1-1">item one</el-menu-item>
-            <el-menu-item index="1-2">item two</el-menu-item>
+
+          <el-menu-item-group>
+            <el-menu-item
+              v-for="(subItem,subIndex) in item.children"
+              :index="subIndex.path"
+              :key="subItem.path"
+            >
+            <component class="icons" :is="subItem.icon"></component> 
+            <span>{{ subItem.label }}</span>
+            </el-menu-item>
           </el-menu-item-group>
-          <el-menu-item-group title="Group Two">
-            <el-menu-item index="1-3">item three</el-menu-item>
-          </el-menu-item-group>
-          <el-sub-menu index="1-4">
-            <template #title>item four</template>
-            <el-menu-item index="1-4-1">item one</el-menu-item>
-          </el-sub-menu>
-        </el-sub-menu>
-        <el-menu-item index="2">
-          <el-icon><icon-menu /></el-icon>
-          <span>Navigator Two</span>
-        </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <el-icon><document /></el-icon>
-          <span>Navigator Three</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <el-icon><setting /></el-icon>
-          <span>Navigator Four</span>
-        </el-menu-item>
+        </el-sub-menu>        
       </el-menu>
     </el-aside>
     
@@ -89,10 +89,31 @@ const list =ref([
         ],
     }
 ])
-//computed 计算属性 返回值为计算属性的ref 
+//computed 计算属性 返回值为计算属性的ref 计算属性来描述依赖响应式状态的复杂逻辑，接收getter函数，自动追踪响应式依赖
 //filter为给定数组执行浅拷贝，filter内部的函数被数组中的每个数据执行一次，item传递的参数为正在执行的数据，
-const noChildren =computed(()=>list.filter(item=>!item.children))
-const hasChildren =computed(()=>list.filter(item=>item.children))
-
+const noChildren =computed(()=>list.value.filter(item=>!item.children))
+const hasChildren =computed(()=>list.value.filter(item=>item.children))
+//浅拷贝：共享相同的引用 不是同一个对象，属性值和原型链相等，对副本的嵌套对象属性的重新赋值会影响源对象,顶层不会
+//array.prototype.concat(),slice(),from(),Object.assign()
 
 </script>
+
+<style lang="less" scoped>
+.icons {
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+}
+.el-menu{
+  border-right: none;
+  h3{
+    line-height: 48px;
+    color: #fff;
+    text-align: center;
+  }
+}
+.el-aside{
+  height: 100%;
+  background-color: #545c64;
+}
+</style>
