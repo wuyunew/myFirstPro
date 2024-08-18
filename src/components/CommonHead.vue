@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="l-content">
-            <el-button type="primary" size="small" @click="">
+            <el-button type="primary" size="small" @click="handleCollaspe">
                 <component class="icons" is="menu"></component>
             </el-button>
             <el-breadcrumb separate="/" class="bread">
@@ -28,10 +28,16 @@
 
 <script setup>
 import { ref,computed } from 'vue';
+import { useAllDataStore } from '@/stores/allData';
 //动态头像
 const getImgUrl=(user)=>{
     return new URL(`../assets/images/${user}.png`,import.meta.url).href;
 }
+const store=useAllDataStore()
+const handleCollaspe=()=>{
+    store.state.isCollapse=!store.state.isCollapse
+}
+
 </script>
 
 <style scoped>
