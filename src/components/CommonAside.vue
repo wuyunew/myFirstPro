@@ -1,6 +1,6 @@
 <template>
   <el-aside :width="width">
-    <el-menu background-color="#545c64" text-color="#fff" :collapse="isCollaspe">
+    <el-menu background-color="#545c64" text-color="#fff" :collapse="isCollaspe" :collapse-transition="false">
       <h3 v-show="!isCollaspe">通用后台管理系统</h3>
       <h3 v-show="isCollaspe"> 后台</h3>
       <el-menu-item v-for="item in noChildren" :index="item.path" :key="item.path">
@@ -31,6 +31,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useAllDataStore } from '@/stores/allData';
+import { ElCollapseTransition } from 'element-plus';
 const list = ref([
   {
     path: '/home',
@@ -84,7 +85,7 @@ const hasChildren = computed(() => list.value.filter(item => item.children))
 //浅拷贝：共享相同的引用 不是同一个对象，属性值和原型链相等，对副本的嵌套对象属性的重新赋值会影响源对象,顶层不会
 //array.prototype.concat(),slice(),from(),Object.assign()
 const store = useAllDataStore()
-const isCollaspe = computed(()=>store.state.isCollapse)
+const isCollaspe = computed(() => store.state.isCollapse)
 //width
 const width = computed(() => store.state.isCollapse ? '64px' : '180px')
 </script>
