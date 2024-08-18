@@ -33,3 +33,38 @@ const getImgUrl=(user)=>{
     return new URL(`../assets/images/${user}.png`,import.meta.url).href;
 }
 </script>
+
+<style scoped>
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #333;
+}
+.icons {
+    width: 20px;
+    height: 20px;
+}
+.l-content {
+    display: flex;
+    align-items: center;
+    .el-button{
+        margin-right: 20px;
+    }
+}
+.r-content {
+    .user{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+}
+:deep(.bread span){
+    color: #fff !important;
+    cursor:  pointer !important;
+}
+
+</style>
+

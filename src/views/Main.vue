@@ -1,28 +1,19 @@
 <script setup>
 import CommonAside from '@/components/CommonAside.vue';
-
+import CommonHead from '@/components/CommonHead.vue';
 </script>
 <template>
-<div class="common-layout">
-    <el-container :direction="vertical" class="lay-container">
-        <el-header class="el-header">
-            <common-header />
-        </el-header>
-        <el-container :direction="horizontal">
-            <CommonAside />
-            <el-container :direction="vertical">
-                <el-main height="" class="right-main">
-                    main
-                </el-main>
-                <el-footer height="">
-                    <!-- Footer content -->
-                </el-footer>
-            </el-container>
+    <div class="common-layout">
+      <el-container class="lay-container">
+        <CommonAside />
+        <el-container>
+          <el-header class="el-header"><CommonHead /></el-header>
+          <el-main>Main</el-main>
+          <el-footer>Footer</el-footer>
         </el-container>
-    </el-container>
-    
-</div>
-</template>
+      </el-container>
+    </div>
+  </template>
 
 <style scoped lang="less">
   .common-layout,.lay-container{
@@ -31,7 +22,5 @@ import CommonAside from '@/components/CommonAside.vue';
   .el-header{
     background-color: #333;
   }
-
-
 
 </style>
