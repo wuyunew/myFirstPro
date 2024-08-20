@@ -29,8 +29,8 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import { ref } from 'vue';
+import { ref, getCurrentInstance,onMounted} from 'vue';
+const{proxy}=getCurrentInstance();
 const getImageUrl = (user) => {
     return new URL(`../assets/images/${user}.png`, import.meta.url).href
 }
@@ -54,16 +54,13 @@ const tabelLabel = ref({
     monthBuy: "本月购买",
     totalBuy: "总购买",
 })
-axios({
-    url: '/api/home/getTableData',
-    method: 'get',
-}).then(res => {
-    console.log(res.data)
+const getTableData =async()=>{
+    const data =await proxy.$api.getTableData()
+    console.log(data)
 }
-    //console.log(response.data);
-    //要学会制造假数据 交互请求的流程，根据接口文档跑通，还要制造出数据
-    //有没有一种工具 拦截住请求 把我们制造的数据 根据接口文档来的
-)
+onMounted(()=>{
+getTableData()
+})
 
 </script>
 
