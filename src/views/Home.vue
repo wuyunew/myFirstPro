@@ -23,17 +23,29 @@
             </el-card>
 
         </el-col>
-        <el-col :span="12" :offset="0"></el-col>
+
+        <el-col :span="16" style="margin-top: 20px;">
+            <div class="num">
+                <el-card :body-style="{ display: 'flex', padding: 0 }" v-for="item in countData" :key="item.name">
+                    <component :is="item.icon" class="icons" :style="{ background: item.color }"></component>
+                    <div class="detail">
+                        <p class="num">${{ item.value }}</p>
+                        <p class="txt">${{ item.name }}</p>
+                    </div>
+                </el-card>
+            </div>
+        </el-col>
     </el-row>
 
 </template>
 
 <script setup>
-import { ref, getCurrentInstance,onMounted} from 'vue';
-const{proxy}=getCurrentInstance();
+import { ref, getCurrentInstance, onMounted } from 'vue';
+const { proxy } = getCurrentInstance();
 const getImageUrl = (user) => {
     return new URL(`../assets/images/${user}.png`, import.meta.url).href
 }
+const countData = ref([])
 const tableData = ref([
     {
         name: 'java',
@@ -54,12 +66,19 @@ const tabelLabel = ref({
     monthBuy: "本月购买",
     totalBuy: "总购买",
 })
-const getTableData =async()=>{
-    const data =await proxy.$api.getTableData()
-    console.log(data)
+const getTableData = async () => {
+    const data = await proxy.$api.getTableData()
+    tableData.value = data.tableData
+    console.log(tableData.value)
 }
-onMounted(()=>{
-getTableData()
+const getCountData = async () => {
+    const data = await proxy.$api.getCountData()
+    countData.value = data.countData
+    console.log(countData.value)
+}
+onMounted(() => {
+    getTableData()
+    getCountData()
 })
 
 </script>
@@ -96,10 +115,6 @@ getTableData()
             }
         }
 
-        .user-table {
-            margin-top: 20px;
-        }
-
     }
 
     .login-info {
@@ -113,6 +128,55 @@ getTableData()
                 margin-left: 60px;
             }
         }
+    }
+
+    .user-table {
+        margin-top: 20px;
+    }
+
+
+    .num {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        .el-card {
+            width: 32%;
+            margin-bottom: 20px;
+
+        }
+
+        .icons {
+            font-size: 70px;
+            height: 70px;
+            font-size: 70px;
+            text-align: center;
+            line-height: 70px;
+            color: #fff;
+        }
+
+        .detail {
+            margin-left: 25px;
+            margin-top: -10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .num {
+            font-size: 18px;
+
+        }
+
+        .txt {
+            margin-top: -13px;
+            color: #999;
+            font-size: 14px;
+        }
+
+
+
+
     }
 }
 </style>

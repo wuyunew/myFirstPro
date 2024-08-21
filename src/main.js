@@ -5,7 +5,7 @@ import router from './router'
 import less from 'less'
 import api from './api/api'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import "@/api/mock.js"//
+import "@/api/mock.js"
 
 
 const app = createApp(App)

@@ -2,15 +2,15 @@ const env=import.meta.env.MOOE || "development";
 const EnvConfig={
     development:{
         baseApi:"/api",
-        mockApi:"https://apifoxmock.com/ml/4068509-0-default/api",
+        mockApi:"/api/mock",
     },
     text:{
         baseApi:"//test.future.com/api",
-        mockApi:"https://apifoxmock.com/ml/4068509-0-default/api",
+        mockApi:"/api/mock",
     },
     prod:{
         baseApi:"//future.com/api",
-        mockApi:"https://apifoxmock.com/ml/4068509-0-default/api",
+        mockApi:"/api/mock",
     },
 };
 //和request配合
