@@ -4,3 +4,4 @@ import homeApi from "./mockData/home";//默认导入，指定自己喜欢的名�
 //正则表达式写法
 Mock.mock("/api/mock/home/getTableData", "get", homeApi.getTableData);
 Mock.mock("/api/mock/home/getCountData", "get", homeApi.getCountData);
+Mock.mock("/api/mock/home/getChartData", "get", homeApi.getChartData);

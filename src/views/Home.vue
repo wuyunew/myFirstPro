@@ -1,6 +1,6 @@
 <template>
     <el-row :gutter="20" class="home">
-        <el-col :span="8" style="margin-top: 20px;">
+        <el-col :span="8" style="margin-top: 20px">
             <el-card shadow="hover">
                 <div class="user">
                     <img :src="getImageUrl(`user`)" class="user" />
@@ -24,7 +24,7 @@
 
         </el-col>
 
-        <el-col :span="16" style="margin-top: 20px;">
+        <el-col :span="16" style="margin-top: 20px">
             <div class="num">
                 <el-card :body-style="{ display: 'flex', padding: 0 }" v-for="item in countData" :key="item.name">
                     <component :is="item.icon" class="icons" :style="{ background: item.color }"></component>
@@ -34,32 +34,36 @@
                     </div>
                 </el-card>
             </div>
+            <el-card class="top-echart">
+                <div ref="echart" style="height: 280px">
+                </div>
+            </el-card>
+
+            <div class="graph">
+                <el-card shadow="always" :body-style="{ padding: '20px' }">
+                    <div slot="header">
+                        <span><!-- card title --></span>
+                    </div>
+                    <!-- card body -->
+                </el-card>
+                
+            </div>
+
+
         </el-col>
     </el-row>
-
 </template>
 
 <script setup>
-import { ref, getCurrentInstance, onMounted } from 'vue';
+import { ref, getCurrentInstance, onMounted, reactive } from 'vue';
+import * as echarts from 'echarts';
 const { proxy } = getCurrentInstance();
 const getImageUrl = (user) => {
     return new URL(`../assets/images/${user}.png`, import.meta.url).href
 }
 const countData = ref([])
-const tableData = ref([
-    {
-        name: 'java',
-        todayBuy: 100,
-        monthBuy: 200,
-        totalBuy: 300,
-    },
-    {
-        name: 'vue',
-        todayBuy: 150,
-        monthBuy: 250,
-        totalBuy: 400,
-    }
-])
+const tableData = ref([])
+const chartData = ref([])
 const tabelLabel = ref({
     name: "课程",
     todayBuy: "今日购买",
@@ -69,16 +73,76 @@ const tabelLabel = ref({
 const getTableData = async () => {
     const data = await proxy.$api.getTableData()
     tableData.value = data.tableData
-    console.log(tableData.value)
 }
 const getCountData = async () => {
     const data = await proxy.$api.getCountData()
     countData.value = data.countData
-    console.log(countData.value)
 }
+const getChartData = async () => {
+    const { orderData } = await proxy.$api.getChartData()
+    //对第一个图标进行x轴和series赋值
+    xOptions.xAxis.data = orderData.date;
+    xOptions.series = Object.keys(orderData.data[0]).map(val => {
+        return {
+            name: val,
+            data: orderData.data.map(item => item[val]),
+            type: 'line'
+        }
+    })
+    const oneEchart = echarts.init(proxy.$refs['echart']);
+    oneEchart.setOption(xOptions);
+}
+const xOptions = reactive({
+    textStyle: {
+        color: '#333',
+    },
+    legend: {},
+    grid: {
+        left: "20%"
+    },
+    //提示框
+    tooltip: {
+        trigger: 'axis',
+    },
+    xAxis: {
+        type: 'category',
+        data: [],
+        axisLine: {
+            lineStyle: {
+                color: '#17b3a3',
+            },
+        },
+        axisLabel: {
+            interval: 0,
+            color: '#333',
+        },
+    },
+    yAxis: [{
+        type: 'value',
+        axisLine: {
+            lineStyle: {
+                color: '#17b3a3',
+            },
+        },
+        axisLabel: {
+            color: '#333',
+        },
+    }],
+    color: ["#2ec7c9", "#b6a2de", "#5ablef", "ffb980", "#ff9f7f", "#53c68c"],
+    series: [],
+})
+const pieOptions = reactive({
+    tooltip: { trigger: 'item' },
+    legend: {},
+    color: ["#2ec7c9", "#b6a2de", "#5ablef", "ffb980", "#ff9f7f", "#39c362", "#53c68c"],
+    series: []
+})
+
+
 onMounted(() => {
     getTableData()
     getCountData()
+    getChartData()
 })
 
 </script>
@@ -87,6 +151,7 @@ onMounted(() => {
 .home {
     height: 100%;
     overflow: hidden;
+
 
     .user {
         display: flex;

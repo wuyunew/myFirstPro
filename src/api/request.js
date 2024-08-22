@@ -46,8 +46,6 @@ function request(options) {//options:method,url,mock
         }else{
             service.defaults.baseURL = isMock ? config.mockApi : config.baseApi;
         }
-        console.log(options)
-        console.log(service.defaults.baseURL)
         return service(options);
     }
 }

@@ -19,4 +19,11 @@ export default {
             mock: true,
         });
     },
+    getChartData() {
+        return request({
+            url: "/home/getChartData",
+            method: "get",
+            mock: true,
+        });
+    }
 }
