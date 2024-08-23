@@ -40,13 +40,14 @@
             </el-card>
 
             <div class="graph">
-                <el-card shadow="always" :body-style="{ padding: '20px' }">
-                    <div slot="header">
-                        <span><!-- card title --></span>
-                    </div>
-                    <!-- card body -->
+                <el-card>
+                    <div ref="userEchart" style="height: 240px"></div>
                 </el-card>
-                
+                <el-card>
+                    <div ref="videoEchart" style="height: 240px"></div>
+                </el-card>
+
+
             </div>
 
 
@@ -63,7 +64,8 @@ const getImageUrl = (user) => {
 }
 const countData = ref([])
 const tableData = ref([])
-const chartData = ref([])
+//const chartData = ref([])
+const observer=ref(null)
 const tabelLabel = ref({
     name: "课程",
     todayBuy: "今日购买",
@@ -79,7 +81,7 @@ const getCountData = async () => {
     countData.value = data.countData
 }
 const getChartData = async () => {
-    const { orderData } = await proxy.$api.getChartData()
+    const { orderData, userData, videoData } = await proxy.$api.getChartData()
     //对第一个图标进行x轴和series赋值
     xOptions.xAxis.data = orderData.date;
     xOptions.series = Object.keys(orderData.data[0]).map(val => {
@@ -91,6 +93,44 @@ const getChartData = async () => {
     })
     const oneEchart = echarts.init(proxy.$refs['echart']);
     oneEchart.setOption(xOptions);
+
+    //对第二个图标进行x轴和series赋值
+    xOptions.xAxis.data = userData.map(item => item.date);
+    xOptions.series = [{
+        name: '新增用户',
+        data: userData.map(item => item.new),
+        type: 'bar'
+    },
+    {
+        name: '活跃用户',
+        data: userData.map(item => item.active),
+        type: 'bar'
+    }];
+    const twoEchart = echarts.init(proxy.$refs['userEchart']);
+    twoEchart.setOption(xOptions);
+
+    //对饼状图进行渲染
+    pieOptions.series = [{
+        data:videoData,
+        type:'pie',
+    }];
+
+    const threeEchart = echarts.init(proxy.$refs['videoEchart']);
+    threeEchart.setOption(pieOptions);
+
+    //监听页面的变化
+    //如果监听的容器大小发生变化，改变了以后会执行回调函数
+    observer.value=new ResizeObserver((en) => {
+        oneEchart.resize();
+        twoEchart.resize();
+        threeEchart.resize();
+    })
+    //容器存在
+    if(proxy.$refs['echart']){
+        observer.value.observe(proxy.$refs['echart']);
+
+    }
+
 }
 const xOptions = reactive({
     textStyle: {
@@ -137,6 +177,7 @@ const pieOptions = reactive({
     color: ["#2ec7c9", "#b6a2de", "#5ablef", "ffb980", "#ff9f7f", "#39c362", "#53c68c"],
     series: []
 })
+
 
 
 onMounted(() => {
@@ -238,10 +279,16 @@ onMounted(() => {
             color: #999;
             font-size: 14px;
         }
-
-
-
-
     }
+    .graph{
+        margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            .el-card{
+                width: 48%;
+                height: 260px;
+            }
+            
+        }
 }
 </style>

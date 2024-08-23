@@ -13,7 +13,7 @@ import CommonHead from '@/components/CommonHead.vue';
         <el-main>
           <RouterView></RouterView>
         </el-main>
-        <el-footer>Footer</el-footer>
+        <el-footer></el-footer>
       </el-container>
     </el-container>
   </div>

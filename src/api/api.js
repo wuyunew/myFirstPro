@@ -1,6 +1,7 @@
 /**
  * 整个项目api的统一管理
  */
+import { toRaw } from "vue";
 import request from "./request";
 //请求首页左侧的表格的数据
 
@@ -9,7 +10,7 @@ export default {
         return request({
             url: "/home/getTableData",
             method: "get",
-            mock:true,
+            mock: true,
         });
     },
     getCountData() {
@@ -24,6 +25,15 @@ export default {
             url: "/home/getChartData",
             method: "get",
             mock: true,
+        });
+    },
+    getUserData(data) {
+        //params是与请求一起发送的url参数 必须是一个简单对象或URLSearchParams对象
+        return request({
+            url: "/user/getUserData",
+            method: "get",
+            mock: true,
+            data,
         });
     }
 }
