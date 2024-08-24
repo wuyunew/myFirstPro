@@ -1,5 +1,6 @@
 <script setup>
 import { ref, getCurrentInstance, onMounted, reactive } from 'vue';
+//按需引入element后不需要再import 否则会出bug
 const handleClick = () => {
     console.log('click');
 }
@@ -11,6 +12,7 @@ const getUserData = async () => {
         ...item,
         sexLablel: item.sex === 1 ? '男' : '女'
     }))
+    config.total = data.count;
 }
 const tabelLabel = reactive([
     {
@@ -44,8 +46,25 @@ const handleSearch = () => {
     getUserData()
 }
 const config = reactive({
-    name: ''
+    name: '',
+    total: 0,
+    page: 1
 });
+const handleChange = (page) => {
+    config.page = page;
+    getUserData()
+}
+const handleDelete = (val) => {
+    ElMessageBox.confirm("Are you sure you want to delete").then(async () => {
+        await proxy.$api.deleteUser({ id: val.id })
+        ElMessage({
+            showClose: true,
+            message: "删除成功",
+            type: "success"
+        })
+        getUserData()
+    })
+}
 onMounted(
     () => {
         getUserData()
@@ -75,15 +94,30 @@ onMounted(
             />
 
             <el-table-column fixed="right" label="Operations" min-width="120">
-                <template #default>
+                <template #="scope">
                     <el-button type="primary" size="small" @click="handleClick">
                         编辑
                     </el-button>
-                    <el-button type="danger" size="small">删除</el-button>
+                    <el-button type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
+        <el-pagination class="pager" background layout="prev,pager,next" size="small" :total="config.total"
+            @current-change="handleChange" />
+
+
     </div>
+    <el-dialog
+    v-model="dialogvisible"
+        :title="action=='add'?'新增用户':'编辑用户'"
+        width="35%"
+        :before-close="handleClose">
+
+        <!--需要注意的是-->
+    </el-dialog>
+    
+
+
 
 
 
@@ -93,5 +127,21 @@ onMounted(
 .user-header {
     display: flex;
     justify-content: space-between;
+}
+
+.table {
+    position: relative;
+    height: 520px;
+
+    .pager {
+        position: absolute;
+        right: 10px;
+        bottom: 30px;
+    }
+
+    .el-table {
+        width: 100%;
+        height: 500%;
+    }
 }
 </style>

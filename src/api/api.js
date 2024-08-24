@@ -35,5 +35,13 @@ export default {
             mock: true,
             data,
         });
-    }
+    },
+    deleteUser(data) {
+        return request({
+            url: "/user/deleteUser",
+            method: "get",
+            mock: true,
+            data,
+        });
+    },
 }

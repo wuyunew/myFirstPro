@@ -40,12 +40,31 @@ export default {
         })
         const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
         return {
-            code:200,
+            code: 200,
             data: {
                 list: pageList,
-                count:mockList.length
+                count: mockList.length
+            }
+        }
+    },
+
+    deleteUser: config => {
+        const { id } = param2Obj(config.url)
+        if (!id) {
+            return {
+                code: -999,
+                message: '参数错误'
+            }
+        }
+        else {
+            List = List.filter(user => user.id !== id)
+            return {
+                code: 200,
+                data: '删除成功!'
             }
         }
     }
+
+
 }
 
