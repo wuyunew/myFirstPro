@@ -44,4 +44,12 @@ export default {
             data,
         });
     },
+    addUser(data) {
+        return request({
+            url: "/user/addUser",
+            method: "post",
+            mock: true,
+            data,
+        });
+    },
 }

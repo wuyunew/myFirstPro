@@ -63,7 +63,36 @@ export default {
                 data: '删除成功!'
             }
         }
-    }
+    },
+    /**
+     * @param {name,addr,age,birth,sex
+     * @return{{code:number,data:{message:string}}}
+     */
+    createUser: config => {
+        const {
+            name, addr, age, birth, sex
+        } = JSON.parse(config.body)
+        if (!name ||!addr ||!age ||!birth ||!sex) {
+            return {
+                code: -999,
+                message: '参数错误'
+            }
+        }
+        else {
+            List.unshift({
+                id: Mock.Random.guid(),
+                name,
+                addr,
+                age,
+                birth,
+                sex
+            })
+            return {
+                code: 200,
+                data: '创建成功!'
+            }
+        }
+    },
 
 
 }

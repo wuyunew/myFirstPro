@@ -9,3 +9,4 @@ Mock.mock(/api\/mock\/home\/getChartData/, "get", homeApi.getChartData);
 //这种mock写法不能拦截带参数的请求，写正则表达式的类型
 Mock.mock(/api\/mock\/user\/getUserData/, "get", userApi.getUserList);
 Mock.mock(/api\/mock\/user\/deleteUser/, "get", userApi.deleteUser);
+Mock.mock(/api\/mock\/user\/addUser/, "post", userApi.createUser);
