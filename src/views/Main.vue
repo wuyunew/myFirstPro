@@ -1,6 +1,7 @@
 <script setup>
 import CommonAside from '@/components/CommonAside.vue';
 import CommonHead from '@/components/CommonHead.vue';
+import CommonTab from '@/components/CommonTab.vue';
 </script>
 <template>
   <div class="common-layout">
@@ -10,6 +11,7 @@ import CommonHead from '@/components/CommonHead.vue';
         <el-header class="el-header">
           <CommonHead />
         </el-header>
+        <CommonTab />
         <el-main>
           <RouterView></RouterView>
         </el-main>

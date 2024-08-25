@@ -19,6 +19,11 @@ const router = createRouter({
           path:'user',
           name:'user',
           component: () => import('@/views/User.vue')
+        },
+        {
+          path:'mail',
+          name:'mail',
+          component: () => import('@/views/Mail.vue') 
         }
       ]
     },
