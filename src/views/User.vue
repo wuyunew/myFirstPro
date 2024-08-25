@@ -1,6 +1,5 @@
 <script setup>
-import { time } from 'echarts';
-import { ref, getCurrentInstance, onMounted, reactive } from 'vue';
+import { ref, getCurrentInstance, onMounted, reactive, nextTick } from 'vue';
 //按需引入element后不需要再import 否则会出bug
 const handleClick = () => {
     console.log('click');
@@ -11,7 +10,7 @@ const getUserData = async () => {
     let data = await proxy.$api.getUserData(config)
     tableData.value = data.list.map(item => ({
         ...item,
-        sexLablel: item.sex === 1 ? '男' : '女'
+        sexLablel: item.sex === '1' ? '男' : '女'
     }))
     config.total = data.count;
 }
@@ -133,6 +132,15 @@ const onSubmit = () => {
         }
     })
 }
+const handleEdit=(val)=>{
+    action.value = 'edit';
+    dialogvisible.value = true;
+    //浅拷贝
+    nextTick(()=>{
+        Object.assign(formUser, {...val,sex:''+val.sex})
+    })
+
+}
 onMounted(
     () => {
         getUserData()
@@ -163,7 +171,7 @@ onMounted(
 
             <el-table-column fixed="right" label="Operations" min-width="120">
                 <template #="scope">
-                    <el-button type="primary" size="small" @click="handleClick">
+                    <el-button type="primary" size="small" @click="handleEdit(scope.row)">
                         编辑
                     </el-button>
                     <el-button type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>

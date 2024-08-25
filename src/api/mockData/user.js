@@ -1,3 +1,4 @@
+
 import Mock from 'mockjs'
 
 function param2Obj(url) {
@@ -94,6 +95,31 @@ export default {
         }
     },
 
+    /**
+     * @param  id, name, addr, age, birth, sex
+     * @return {{code:number,data:{message:string}}}
+     * 
+     */
+    updateUser: config => {
+        const { name, addr, age, birth, sex } = JSON.parse(config.body)
+        const sex_num=parseInt(sex)
+        List.some(u=>{
+            if(u.id===id){
+                u.name=name
+                u.addr=addr
+                u.age=age
+                u.birth=birth
+                u.sex=sex_num
+                return true
+            }
+        })
+        return {
+            code: 200,
+            data: {
+                message: '更新成功!'
+            }
+        }
+    }
 
 }
 
