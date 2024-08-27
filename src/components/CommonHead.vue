@@ -12,7 +12,7 @@
         <div class="r-content">
             <el-dropdown>
                 <span class="el-dropdown-link">
-                    <img :src="getImgUrl(user)" class="user" />
+                    <img :src="getImgUrl('user')" class="user" />
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
@@ -31,7 +31,7 @@ import { ref, computed } from 'vue';
 import { useAllDataStore } from '@/stores/allData';
 //动态头像
 const getImgUrl  = (user)=>{
-    return new URL(`../assets/images/${user}.png`,import.meta.url).href
+    return new URL(`../assets/images/${user}.jpg`,import.meta.url).href
 }
 const store = useAllDataStore()
 const handleCollaspe = () => {

@@ -1,6 +1,7 @@
 import Mock from "mockjs";
 import homeApi from "./mockData/home";//默认导入，指定自己喜欢的名称
 import userApi from "./mockData/user";
+import menuApi from "./mockData/permission";
 //1.拦截的路径2.方法3.制造出的假数据
 //正则表达式写法
 Mock.mock(/api\/mock\/home\/getTableData/, "get", homeApi.getTableData);
@@ -11,3 +12,4 @@ Mock.mock(/api\/mock\/user\/getUserData/, "get", userApi.getUserList);
 Mock.mock(/api\/mock\/user\/deleteUser/, "get", userApi.deleteUser);
 Mock.mock(/api\/mock\/user\/addUser/, "post", userApi.createUser);
 Mock.mock(/api\/mock\/user\/editUsers/, "post", userApi.updateUser);
+Mock.mock(/api\/mock\/permission\/getMenu/, "post", menuApi.getMenu);

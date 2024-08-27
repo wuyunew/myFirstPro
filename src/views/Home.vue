@@ -60,7 +60,7 @@ import { ref, getCurrentInstance, onMounted, reactive } from 'vue';
 import * as echarts from 'echarts';
 const { proxy } = getCurrentInstance();
 const getImageUrl = (user) => {
-    return new URL(`../assets/images/${user}.png`, import.meta.url).href
+    return new URL(`../assets/images/${user}.jpg`, import.meta.url).href
 }
 const countData = ref([])
 const tableData = ref([])
