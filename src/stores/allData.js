@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-
+import { watch } from 'vue'
 function initState() {
   return {
     isCollapse: false,
@@ -24,6 +24,12 @@ export const useAllDataStore = defineStore('allData', () => {
   //computed getters
   //function actions
   const state = ref(initState());
+  //监听state 使得路由持久化
+  watch(state,(newObj)=>{
+    if(!newObj.token) return;
+    localStorage.setItem("store",JSON.stringify(newObj));
+  },
+  {deep: true})
   function selectMenu(val) {
     if (val.name === 'home') {
       state.value.currentMenu = null
@@ -42,8 +48,16 @@ export const useAllDataStore = defineStore('allData', () => {
 
   }
   //动态路由
-  function addMenu(router) {
-    const menu =state.value.menuList;
+  function addMenu(router,type) {
+    if(type ==='refresh') {//刷新后保存路由
+      if(JSON.parse(localStorage.getItem("store"))) {
+        state.value = JSON.parse(localStorage.getItem("store"));
+        state.value.routerList=[];
+      } else {
+        return;
+    }
+  }
+    const menu = state.value.menuList;
     const module = import.meta.glob('../views/**/*.vue');
     const routeArr = []
     menu.forEach(item => {
@@ -61,23 +75,22 @@ export const useAllDataStore = defineStore('allData', () => {
 
       }
 
+    });
+    //解决路由多账号问题
+    state.value.routerList = [];
+    let routers = router.getRoutes();
+    routers.forEach(item => {
+      if (item.name == 'main' || item.name == 'login') {
+        return
+      }else {
+        router.removeRoute(item.name);
+      }
     })
-
     routeArr.forEach(item => {
       state.value.routerList.push(
         router.addRoute("main", item)
       )
     })
-  }
-  function clean(){
-    state.value.routerList.forEach(
-      (item) => {
-        if(item) item();
-      }
-    )
-    state.value=initialState();
-    //删除本地的缓存
-    localStorage.removeItem('store');
   }
 
   return {
@@ -86,7 +99,6 @@ export const useAllDataStore = defineStore('allData', () => {
     updateTags,
     updateMenuList,
     addMenu,
-    clean,
 
   }
 })
