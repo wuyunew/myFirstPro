@@ -17,7 +17,7 @@
                 <template #dropdown>
                     <el-dropdown-menu>
                         <el-dropdown-item>个人中心</el-dropdown-item>
-                        <el-dropdown-item>退出</el-dropdown-item>
+                        <el-dropdown-item @click="handleLoginOut">退出</el-dropdown-item>
 
                     </el-dropdown-menu>
                 </template>
@@ -29,6 +29,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useAllDataStore } from '@/stores/allData';
+import { useRouter } from 'vue-router';
 //动态头像
 const getImgUrl  = (user)=>{
     return new URL(`../assets/images/${user}.jpg`,import.meta.url).href
@@ -36,6 +37,14 @@ const getImgUrl  = (user)=>{
 const store = useAllDataStore()
 const handleCollaspe = () => {
     store.state.isCollapse = !store.state.isCollapse
+}
+const router=useRouter()
+const handleLoginOut = () => {
+    // 退出操作
+    // 跳转到登出页面
+    store.clean()
+    router.push('/login')
+
 }
 
 </script>

@@ -91,6 +91,18 @@ export const useAllDataStore = defineStore('allData', () => {
         router.addRoute("main", item)
       )
     })
+
+  }
+
+  function clean(){
+    state.value.routerList.forEach(
+      (item) => {//item是默认参数 remove
+        if(item) item();
+      }
+    )
+    state.value=initState();
+    //删除本地的缓存
+    localStorage.removeItem('store');
   }
 
   return {
@@ -99,6 +111,7 @@ export const useAllDataStore = defineStore('allData', () => {
     updateTags,
     updateMenuList,
     addMenu,
+    clean,
 
   }
 })
