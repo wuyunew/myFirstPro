@@ -13,6 +13,7 @@ function initState() {
         //url:'Home',
       },
     ],
+    //面包屑处理
     currentMenu: null,
     menuList: [],
     token: "",
@@ -35,6 +36,7 @@ export const useAllDataStore = defineStore('allData', () => {
       state.value.currentMenu = null
     }
     else {
+      state.value.currentMenu = val;
       let index = state.value.tags.findIndex(item => item.name === val.name)
       index === -1 ? state.value.tags.push(val) : "";
     }

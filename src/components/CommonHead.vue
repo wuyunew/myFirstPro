@@ -5,7 +5,8 @@
                 <component class="icons" is="menu"></component>
             </el-button>
             <el-breadcrumb separate="/" class="bread">
-                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+                <el-breadcrumb-item v-if="current" :to="current.path">{{ current.label }}</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
@@ -46,7 +47,7 @@ const handleLoginOut = () => {
     router.push('/login')
 
 }
-
+const current=computed(() => store.state.currentMenu)
 </script>
 
 <style scoped>
